@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-homes=(masculino feminino casa infantil)
+eval 'homes=($(cat homes-list.txt))'
 
 for home in "${homes[@]}"
 do
   echo $home
-  echo "new:" $(cat ${home}.txt | grep new | wc -l)
-  echo "old:" $(cat ${home}.txt | grep old | wc -l)
+  echo "new:" $(cat ${home}-data.txt | grep new | wc -l)
+  echo "old:" $(cat ${home}-data.txt | grep old | wc -l)
   echo
 done

@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-homes=(masculino feminino casa infantil)
+eval 'homes=($(cat homes-list.txt))'
 
 echo "|| homepage || qtd new || % new || qtd old || % old ||"
 for home in "${homes[@]}"
 do
-  NEW=$(cat ${home}.txt | grep new | wc -l)
-  OLD=$(cat ${home}.txt | grep old | wc -l)
+  NEW=$(cat ${home}-data.txt | grep new | wc -l)
+  OLD=$(cat ${home}-data.txt | grep old | wc -l)
   TOTAL=$((NEW+OLD))
   NEWPERC=$((NEW*100/TOTAL))
   OLDPERC=$((OLD*100/TOTAL))
