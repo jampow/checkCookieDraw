@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+echo "usage:"
+echo "  ./checkDraw <url> <cookie-regex> [quantity]"
+echo ""
+echo "  url		Website address that will set the cookie"
+echo "  cookie-regex	Regex on grep pattern"
+echo "  quantity	Optional. Total of requests, if omited the default is 10"

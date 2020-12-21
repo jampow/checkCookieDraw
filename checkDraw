@@ -1,18 +1,26 @@
 #!/usr/bin/env bash
 
-eval 'homes=($(cat homes-list.txt))'
-requests=${1:-10}
+requests=${3:-10}
+
+validate() {
+  if [ -z "$1" ]; then
+    source help
+    exit 1
+  fi
+
+  if [ -z "$2" ]; then
+    source help
+    exit 1
+  fi
+}
 
 check () {
-  rm ${home}.txt
-  echo "starting ${requests} requests to home ${home}"
+  rm cookies.txt
+  echo "starting ${requests} requests..."
 
   start=`date +%s`
 
-  URL=https://m.dafiti.com.br/${home}/
-  [ "$home" = "neutra" ] && URL=https://m.dafiti.com.br/
-
-  xargs -I % -P 5 curl -H 'user-agent: Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1' $URL -I -s < <(printf '%s\n' $(seq 1 ${requests})) | grep "pwa-[^=]\+=\(new\|old\)" | grep -o "old\|new" >> ${home}-data.txt
+  xargs -I % -P 5 curl -H 'user-agent: Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1' ${1} -I -s < <(printf '%s\n' $(seq 1 ${requests})) | grep -o "${2}" >> cookies.txt
 
   end=`date +%s`
 
@@ -20,12 +28,8 @@ check () {
   echo
 }
 
-for home in "${homes[@]}"
-do
-  check "$home" 
-done
+validate $@
 
-echo "========= REPORT ========="
-echo
+check $@
 
 source report

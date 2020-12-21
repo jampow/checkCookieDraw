@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 
-eval 'homes=($(cat homes-list.txt))'
+COOKIES=$(cat cookies.txt | sort | uniq)
 
-for home in "${homes[@]}"
+TOTAL=$(cat cookies.txt | wc -l)
+
+REPORT="De ${TOTAL} requisições:\n"
+
+echo 
+for COOKIE in $COOKIES
 do
-  echo $home
-  echo "new:" $(cat ${home}-data.txt | grep new | wc -l)
-  echo "old:" $(cat ${home}-data.txt | grep old | wc -l)
-  echo
+  QTD=$(cat cookies.txt | grep "$COOKIE" | wc -l)
+  PERC=$((QTD*100/TOTAL))
+
+  REPORT="${REPORT}${COOKIE} ${QTD} ${PERC}%\n"
 done
+
+echo -e $REPORT
